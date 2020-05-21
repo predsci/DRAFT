@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+  <div align = 'justify'>
+ The <b>bSIR</b> package calculates stochastic epidemic profiles with constant or time-dependent
+  behavior modification parameters.
+  Two parameters, <i>p</i> and <i>q</i>, describe the effect of reduced contact rate of the susceptible
+  and infectious populations, respectively. <br> 
+  In the absence of behavior modification <i>p = q = 1</i>
+  and we recover the familiar compartmental SIR equations.
+  <b>bSIR</b>
+ supports both constant values for <i>p</i> and <i>q</i> and a time-dependent form which
+  smoothly changes <i>p</i> and <i>q</i> from their initial, pre-epidemic, value of one to the user chosen
+  values that are between zero and one.
+  The start time of change in behavior and the duration it takes it to take full
+  effect are set by the user.
+  Package <b>bSIR</b> comapres the epidemic incidence with and without behaviour
+  modification. <br><br>
+  <b>Models</b>
+
+<ul></ul>
+ <li> No Behavior Modification: given the user  
+ chosen disease (seasonal influenza, pandemic influenza, SARS, Ebola, or <i>build your own disease</i>) 
+ the code uses a compartmental SIR model to generate stochastic profiles of the weekly number of cases.
+ When selecting a disease, default values (and allowed ranges) are set for the basic reproduction number (R<sub>0</sub>), the generation time
+ (T<sub>g</sub>), and the population.  The user can change these default values. 
+ When selecting the <i>build you own</i> option the allowed range for R<sub>0</sub> and T<sub>g</sub> is larger. 
+ </li>
+ <br>
+ <li>
+ Time dependent behavior modification: the behavior of the susceptible and infectious populations changes gradually either in response to public health announcements or due to more active interventions: curfew, school closure, quarantine etc.  The start time of the behavior change (measured in days relative to day-zero of the epidemic), the time it takes to take full effect, and the fractional reductions in contact rate (<i>p</i> and <i>q</i>) are set by the user. The code uses these parameters in a hyperbolic-tangent form to smoothly reduce the contact rates of the two populations from one to <i>p</i> and <i>q</i>.
+ </li>
+ <br>
+ <li>
+    Constant behavior modification: The reduction in contact rate of the susceptible and infectious populations
+    is fixed in time and begins at day zero of the epidemic. 
+ </li>
+  
+  <br>
+  <b>Plots</b> <br><br>
+  The plots are interactive and they display the weekly number of cases.  The stochastic realizations are shown in light blue and the black curve is the mean of all these realizations. The mean final number of cases (cumulative attack rate) is shown on each panel. The top panel displays the SIR results. The middle and bottom panels show the results with time-dependent and constant behavior modification. In these two panels the right y-axis and the red and orange lines show the value of <i>p</i> and <i>q</i> (time-dependent or fixed in time). The interactive hover mode shows the mean weekly number of cases, mean cumulative number of cases and when appropriate weekly value of <i>p</i> and <i>q</i>.
+  </div>        
