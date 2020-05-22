@@ -77,7 +77,7 @@ vecTcalc=seq(0, ndays,dt)
 if (Sys.info()['nodename']=="Q") {
   map_path = "/srv/shiny-server/covid19/worldpop_maps"
 } else {
-  map_path = "~/Dropbox/LEPR04/data/worldpop_maps"
+  map_path = "worldpop_maps"
 }
 map_filenames = list.files(path=map_path)
 split_filenames = strsplit(x=map_filenames, split="_")
