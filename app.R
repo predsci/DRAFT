@@ -77,7 +77,7 @@ vecTcalc=seq(0, ndays,dt)
 if (Sys.info()['nodename']=="Q") {
   map_path = "/srv/shiny-server/covid19/worldpop_maps"
 } else {
-  map_path = "worldpop_maps"
+  map_path = "~/Dropbox/LEPR04/data/worldpop_maps"
 }
 map_filenames = list.files(path=map_path)
 split_filenames = strsplit(x=map_filenames, split="_")
@@ -1282,8 +1282,8 @@ server <- function(input, output, session) {
 	  xm1 = which.max(df1()$rtn)	
 	  ym2 = max(df2()$rtn)
 	  xm2 = which.max(df2()$rtn)
-	  xa = c(rep(df1()$x[round(0.92*nmax())], 3), df1()$x[xm1], df1()$x[xm2]-3) 
-	  ya = c(0.9*max(df1()$rtn), 0.8*max(df1()$rtn), 0.7*max(df1()$rtn), ym1, ym2)
+	  xa = c(rep(df1()$x[round(0.92*nmax())], 3), df1()$x[xm1], df1()$x[xm2]-3, df1()$x[round(0.92*nmax())]) 
+	  ya = c(0.9*max(df1()$rtn), 0.8*max(df1()$rtn), 0.7*max(df1()$rtn), ym1, ym2, 0.6*max(df1()$rtn))
 	  
 	  if (print_data) {
 	  ta = c("Fixed R0", 'Modulated R(t)', 'JHU Data', as.character(ym1), as.character(ym2))
@@ -1297,7 +1297,7 @@ server <- function(input, output, session) {
 	  a3 <- list( x= xa[3], y = ya[3], text = ta[3], font=list(size=14, color=fc[3]), showarrow = F)
 	  a4 <- list( x= xa[4], y = ya[4], text = ta[4], font=list(size=14, color=fc[4]), showarrow = F, xanchor = 'right', yanchor = 'bottom')
 	  a5 <- list( x= xa[5], y = ya[5], text = ta[5], font=list(size=14, color=fc[5]), showarrow = F, xanchor = 'left', yanchor = 'bottom', yref="y2")
-	  a = list(a1, a2, a3, a4, a5)
+	  #a = list(a1, a2, a3, a4, a5)
 	  hover_text_r1    = paste0("Date: ",df2()$x, '<br> R0: ', df1()$Rt)
 	  hover_text_r2    = paste0("Date: ",df2()$x, '<br> R(t): ', df2()$Rt)
 	  
@@ -1333,7 +1333,22 @@ server <- function(input, output, session) {
 	  
 	  yaxis4 <- list(title=list(text="", standoff=65), side = "right", overlaying = "y", color = "green", zeroline = FALSE, showgrid = FALSE, showline = FALSE, range=axis4_limits) #, visible = FALSE)
 
-  
+	  # Do a simple linear regression to finf the scaling between the model and the data
+	  if (print_data) {
+	  	xdata = cases_df()$cases
+	  	ymodel = df2()$rtn[model_range_index]
+	  	coeff = coef(lm(ymodel ~ xdata))[[2]]
+	  	coeff = round(coeff, digits = 2)
+
+	  	a6 = list(x = xa[6], y = ya[6], text = paste0("Scaling ~ ", coeff), font = list(size = 14, color = fc[3]), showarrow = F)
+	  } else {
+	  	a6 = list(x = xa[6], y = ya[6], text = "", font = list(size = 14, color = fc[3]), showarrow = F)
+	  }
+  	  
+  	  # Add to the list that we are displaying
+  	  #
+  	  a = list(a1, a2, a3, a4, a5, a6)
+  	  
 	  pl1 <- plot_ly()
 	  pl1 <- add_trace(pl1, y = y1l, x = x, type ='scatter', mode = 'lines', line = list(color = "#C9EFF9"),
 	                   showlegend = FALSE, inherit = TRUE, hoverinfo = "none",  cliponaxis = FALSE, type = "scatter", yaxis = 'y' )
